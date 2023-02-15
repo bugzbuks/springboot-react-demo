@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Postitive</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <header th:insert="fragments/navBar.html :: navbar"> </header>
+        <h1>Positive message</h1>
+        <p id="message"></p>
+        <script>
+            const apiKey = '@writesonic/v2.2#4enbxztlcbti48j';
+            const authKey = 'f76516b1-9fd3-46f2-8384-5f51bd83d073';
+            const authKey = '';
+
+            const requestOptions = {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-API-KEY': `${authKey}`,
+                'accept':'application/json'
+              },
+              body: JSON.stringify({
+                'description': 'A man in his 40s struggling with the meaning of life',
+                'tone_of_voice': 'positive',
+              })
+            };
+
+            fetch(`https://api.writesonic.com/v2/business/content/story-generation?engine=economy&language=en&num_copies=1`, requestOptions)
+              .then(response => response.json())
+              .then(data => {
+                console.log('Data=',data);
+                const message = data[0].text;
+                document.getElementById('message').textContent = message;
+              })
+              .catch(error => {
+                console.log(error);
+                const message = error;
+                document.getElementById('message').textContent = message;
+              });
+        </script>
+    </div>
+</body>
+</html>
